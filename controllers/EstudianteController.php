@@ -9,14 +9,14 @@ class EstudianteController
 {
     private const VACIO = ['nombres' => '', 'apellidos' => '', 'correo' => '', 'carrera' => '', 'semestre' => ''];
 
-    /** GET: muestra el formulario. */
+    /** GET: muestra el formulario y la lista de estudiantes. */
     public function index(): void
     {
         $datos   = self::VACIO;
         $errores = [];
         $mensaje = isset($_GET['ok']) ? 'Estudiante registrado correctamente.' : null;
 
-        require __DIR__ . '/../vistas/estudiantes.php';
+        $this->mostrar($datos, $errores, $mensaje);
     }
 
     /** POST: valida y guarda. Si todo va bien redirige (patrón Post/Redirect/Get). */
@@ -41,7 +41,20 @@ class EstudianteController
             }
         }
 
-        $mensaje = null;
+        $this->mostrar($datos, $errores, null);
+    }
+
+    /** Consulta los registros (Read) y carga la vista. */
+    private function mostrar(array $datos, array $errores, ?string $mensaje): void
+    {
+        try {
+            $estudiantes = (new Estudiante())->obtenerTodos();
+        } catch (RuntimeException $e) {                     // incluye PDOException
+            error_log('[EstudianteController] ' . $e->getMessage());
+            $estudiantes = [];
+            $errores['general'] ??= 'No fue posible conectar con la base de datos.';
+        }
+
         require __DIR__ . '/../vistas/estudiantes.php';
     }
 

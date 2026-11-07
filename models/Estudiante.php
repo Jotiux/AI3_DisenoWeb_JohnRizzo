@@ -42,4 +42,20 @@ class Estudiante
 
         return $stmt->execute();
     }
+
+    /**
+     * Devuelve todos los estudiantes, del más reciente al más antiguo.
+     * La consulta no recibe datos del usuario; igual se ejecuta con prepare().
+     */
+    public function obtenerTodos(): array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT id, nombres, apellidos, correo, carrera, semestre, fecha_creacion
+               FROM estudiantes
+              ORDER BY id DESC'
+        );
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }

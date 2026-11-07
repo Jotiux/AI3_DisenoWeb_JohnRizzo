@@ -1,6 +1,6 @@
 <?php
 // Evita que la vista se abra directamente sin pasar por index.php
-if (!isset($datos, $errores)) {
+if (!isset($datos, $errores, $estudiantes)) {
     header('Location: ../index.php');
     exit;
 }
@@ -43,7 +43,7 @@ function invalido(array $errores, string $campo): string
 
     <div class="row g-4">
         <!-- Formulario de registro (Create) -->
-        <section class="col-lg-5">
+        <section class="col-lg-4">
             <div class="card shadow-sm">
                 <div class="card-header fw-semibold">Registrar estudiante</div>
                 <div class="card-body">
@@ -106,6 +106,50 @@ function invalido(array $errores, string $campo): string
 
                         <button type="submit" class="btn btn-primary w-100">Guardar</button>
                     </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Consulta de registros (Read) -->
+        <section class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
+                    Estudiantes registrados
+                    <span class="badge text-bg-primary"><?= count($estudiantes) ?></span>
+                </div>
+                <div class="card-body">
+                    <?php if (!$estudiantes): ?>
+                        <p class="text-muted mb-0">Aún no hay estudiantes registrados.</p>
+                    <?php else: ?>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombres</th>
+                                        <th>Apellidos</th>
+                                        <th>Correo</th>
+                                        <th>Carrera</th>
+                                        <th class="text-center">Sem.</th>
+                                        <th>Registrado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($estudiantes as $est): ?>
+                                        <tr>
+                                            <td><?= e($est['id']) ?></td>
+                                            <td><?= e($est['nombres']) ?></td>
+                                            <td><?= e($est['apellidos']) ?></td>
+                                            <td><?= e($est['correo']) ?></td>
+                                            <td><?= e($est['carrera']) ?></td>
+                                            <td class="text-center"><?= e($est['semestre']) ?></td>
+                                            <td class="text-nowrap"><?= e(date('d/m/Y H:i', strtotime($est['fecha_creacion']))) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
