@@ -1,0 +1,29 @@
+# ==========================================
+# .gitignore - Proyecto PHP + MySQL (XAMPP)
+# ==========================================
+
+# Credenciales y variables de entorno locales (NO se publican)
+config/credenciales.php
+.env
+.env.*
+
+# Logs y archivos temporales
+*.log
+logs/
+tmp/
+*.tmp
+*.bak
+
+# Dependencias de Composer (si se llegaran a usar)
+/vendor/
+
+# Archivos de editores / IDE
+.vscode/
+.idea/
+jsconfig.json
+
+# Archivos del sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+__MACOSX/
